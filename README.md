@@ -26,7 +26,7 @@ Link para a documentação da API -> https://backendchallange.docs.apiary.io/#re
 **Após realizar as instalções**
 - Abra o projeto em seu editor de código e rode o comando
   `npm install` para instalar todas as dependências;
-- Em seguida rode o comando vá até o arquivo `db.js` e substitua o texto `root` e `senha` pelos seu usuário e senha do banco local;
+- Em seguida vá até o arquivo `db.js` e substitua o texto `root` e `senha` pelo seu usuário e senha do banco local;
 - Após isso, rode o comando `npm start`, e está tudo pronto para realizar as requisições; 
 
 ## ✔️ `Tecnologias utilizadas`
