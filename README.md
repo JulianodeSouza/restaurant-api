@@ -19,7 +19,6 @@ Link para a documentação da API -> https://backendchallange.docs.apiary.io/#re
 
 ## :hammer: `Abrir e Rodar o Projeto`
 **Realizar a instalação**
-Ter em seu computador instalado:
 - Node.js;
 - Postman ou o client http de sua preferência;
 - DBeaver ou o gerenciador de sua preferência;
