@@ -1,11 +1,11 @@
 const db = require("../../db/conn");
 const { QueryTypes } = require("sequelize");
-
+const RequestErrors = require("../errors/Request");
 class Restaurant {
   constructor() {}
 
   async listAllRestaurants() {
-    const sql = "select * from restaurant";
+    const sql = "select * from restaurants";
 
     const restaurants = await db.query(sql, {
       type: QueryTypes.SELECT,
@@ -18,17 +18,28 @@ class Restaurant {
     return restaurants;
   }
 
-  async register(restaurant) {
-    const errors = await this.validateRegister(restaurant);
+  async listRestaurant(id_restaurant) {
+    const sql = `select * from restaurants r where r.id_restaurant = :idRestaurant limit 1`;
 
-    if (errors.length > 0) {
-      return {
-        errors,
-      };
+    const restaurant = await db.query(sql, {
+      replacements: {
+        idRestaurant: id_restaurant,
+      },
+      type: QueryTypes.SELECT,
+    });
+
+    if (restaurant.length === 0) {
+      throw new Error("Estabelecimento não encontrado.");
     }
 
+    return restaurant;
+  }
+
+  async register(restaurant) {
+    await this.validateRegister(restaurant);
+
     const sql =
-      "insert into restaurant (url_image_restaurant, restaurant_name, street, neighborhood, number, city, zipcode) values (:url_image_restaurant, :restaurant_name, :street, :neighborhood, :number, :city, :zipcode)";
+      "insert into restaurants (url_image_restaurant, restaurant_name, street, neighborhood, number, city, zipcode) values (:url_image_restaurant, :restaurant_name, :street, :neighborhood, :number, :city, :zipcode)";
 
     await db.query(sql, {
       replacements: {
@@ -47,8 +58,8 @@ class Restaurant {
   }
 
   async update(id_restaurant, restaurantObj) {
-    const restaurant = db.query(
-      "select * from restaurant where id_restaurant = :idRestaurant",
+    const restaurant = await db.query(
+      "select * from restaurants where id_restaurant = :idRestaurant",
       {
         replacements: {
           idRestaurant: id_restaurant,
@@ -57,18 +68,18 @@ class Restaurant {
       }
     );
 
-    if (!restaurant) {
-      throw new Error("Restaurante não encontrado.");
+    if (restaurant.length === 0) {
+      throw new Error("Estabelecimento não encontrado.");
     }
 
-    const sql = `update restaurant set
+    const sql = `update restaurants set
     url_image_restaurant = :urlImageRestaurant, restaurant_name = :restaurantName,
     street = :street, neighborhood = :neighborhood, number = :number, city = :city, zipcode = :zipcode where id_restaurant = :idRestaurant `;
 
-    const result = await db.query(sql, {
+    await db.query(sql, {
       replacements: {
-        id_restaurant: id_restaurant,
-        urlImageRestaurant: restaurantObj.url_image_restaurant,
+        idRestaurant: id_restaurant,
+        urlImageRestaurant: restaurantObj.url_image_restaurant || "",
         restaurantName: restaurantObj.restaurant_name,
         street: restaurantObj.street,
         neighborhood: restaurantObj.neighborhood,
@@ -76,9 +87,23 @@ class Restaurant {
         city: restaurantObj.city,
         zipcode: restaurantObj.zipcode,
       },
+      type: QueryTypes.UPDATE,
     });
 
-    return result;
+    return { success: true };
+  }
+
+  async remove(id_restaurant) {
+    const sql = `delete from restaurants r where  r.id_restaurant = :idRestaurant`;
+
+    await db.query(sql, {
+      replacements: {
+        idRestaurant: id_restaurant,
+      },
+      type: QueryTypes.DELETE,
+    });
+
+    return { success: true };
   }
 
   async validateRegister(data) {
@@ -119,7 +144,12 @@ class Restaurant {
       });
     }
 
-    return errors;
+    if (errors.length > 0) {
+      throw new RequestErrors(
+        "Não foi possível cadastrar o restaurante pois há erros no preenchimento dos campos",
+        errors
+      );
+    }
   }
 }
 

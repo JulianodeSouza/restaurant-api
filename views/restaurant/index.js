@@ -1,15 +1,28 @@
 const router = require("express").Router();
 const RestaurantService = require("../../controllers/restaurant");
+const Utils = require("../../utils");
 
 router.get("/", async function (req, res) {
   try {
     const serviceRestaurant = new RestaurantService();
-    const restaurant = await serviceRestaurant.listAllRestaurants();
+    const restaurants = await serviceRestaurant.listAllRestaurants();
 
-    res.json({ restaurant });
+    res.json(restaurants);
   } catch (e) {
-    console.log(e);
-    res.json({ error: e || e.message });
+    Utils.trataExcecao(res, e);
+  }
+});
+
+router.get("/id/:id", async function (req, res) {
+  try {
+    const idRestaurant = req.params.id;
+
+    const serviceRestaurant = new RestaurantService();
+    const restaurant = await serviceRestaurant.listRestaurant(idRestaurant);
+
+    res.json(restaurant);
+  } catch (e) {
+    Utils.trataExcecao(res, e);
   }
 });
 
@@ -22,22 +35,34 @@ router.post("/", async function (req, res) {
 
     res.json(result);
   } catch (e) {
-    console.log(e);
-    res.json({ error: e.message || e });
+    Utils.trataExcecao(res, e);
   }
 });
 
-router.put("/id/:id", async function (req, res) {
+router.put("/:id", async function (req, res) {
   try {
     const serviceRestaurant = new RestaurantService();
-    const id_restaurant = req.params.id;
+    const id_restaurant = Number(req.params.id);
     const restaurant = req.body;
 
     const result = await serviceRestaurant.update(id_restaurant, restaurant);
-    res.json({ result });
+    res.json(result);
   } catch (e) {
-    console.log(e);
-    res.json({ error: e || e.message });
+    Utils.trataExcecao(res, e);
   }
 });
+
+router.delete("/:id", async function (req, res) {
+  try {
+    const idRestaurant = req.params.id;
+    const serviceRestaurant = new RestaurantService();
+
+    const result = await serviceRestaurant.remove(idRestaurant);
+
+    res.json(result);
+  } catch (e) {
+    Utils.trataExcecao(res, e);
+  }
+});
+
 module.exports = router;
