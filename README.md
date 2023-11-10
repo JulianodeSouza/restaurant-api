@@ -1,4 +1,4 @@
-# Backend-challange;
+# Restaurant API
 
 ### `Descrição do Projeto`
 API REST para CRUD de restaurantes e seus produtos.
@@ -6,6 +6,10 @@ API REST para CRUD de restaurantes e seus produtos.
 <p align="left">
     <img src="https://img.shields.io/badge/Status-Em desenvolvimento-yellow?style=for-the-badge"/>   
 </p>
+
+<hr />
+Link para a documentação da API -> https://backendchallange.docs.apiary.io/#reference
+<hr />
 
 ## :hammer: `Funcionalidades`
 - `Cadastrar`: Usuário pode realizar o registro de restaurantes e os seus pratos;
