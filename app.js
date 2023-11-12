@@ -4,6 +4,8 @@ const db = require("./db/conn");
 const multer = require("multer");
 const path = require("path");
 
+const Restaurant = require("./models/restaurant");
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -22,15 +24,17 @@ const storage = multer.diskStorage({
     cb(null, `public/images/${folder}`);
   },
   filename: function (req, file, cb) {
-    cb(null, path.extname(file.originalname));
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-    if (!file.originalname.match(/\.(jpg|png|webp)$/)) {
-      return cb(new Error("Insira apenas arquivos JPG, PNG ou WEBP"));
+    if (!file.originalname.match(/\.(jpg|png|jpeg|webp)$/)) {
+      return cb(new Error("Insira apenas arquivos JPG, PNG, JPEG ou WEBP"));
     }
+
+    cb(undefined, true);
   },
 });
 

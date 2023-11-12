@@ -38,8 +38,8 @@ class Restaurant {
   async register(restaurant) {
     await this.validateRegister(restaurant);
 
-    const sql =
-      "insert into restaurants (url_image_restaurant, restaurant_name, street, neighborhood, number, city, zipcode) values (:url_image_restaurant, :restaurant_name, :street, :neighborhood, :number, :city, :zipcode)";
+    const sql = `insert into restaurants (url_image_restaurant, restaurant_name, street, neighborhood, number, city, zipcode) 
+    values (:url_image_restaurant, :restaurant_name, :street, :neighborhood, :number, :city, :zipcode)`;
 
     await db.query(sql, {
       replacements: {
@@ -142,6 +142,17 @@ class Restaurant {
         field: "number",
         message: "O numero do endereço é obrigatório",
       });
+    }
+
+    if (data.zipcode) {
+      const zipCodeNumbersOnly = data.zipcode.replace(/\D/g, "");
+
+      if (zipCodeNumbersOnly.length !== 8) {
+        errors.push({
+          field: "zipcode",
+          message: "CEP inserido é inválido",
+        });
+      }
     }
 
     if (errors.length > 0) {

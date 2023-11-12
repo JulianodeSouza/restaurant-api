@@ -31,6 +31,10 @@ router.post("/", async function (req, res) {
     const serviceRestaurant = new RestaurantService();
     const data = req.body;
 
+    if (req.files.length > 0) {
+      data.url_image_restaurant = req.files[0].filename;
+    }
+
     const result = await serviceRestaurant.register(data);
 
     res.json(result);
