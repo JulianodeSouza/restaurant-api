@@ -13,9 +13,9 @@ Link para a documentação da API -> https://backendchallange.docs.apiary.io/#re
 
 ## :hammer: `Funcionalidades`
 - `Cadastrar`: Usuário pode realizar o registro de restaurantes e os seus pratos;
-- `Editar`: Permite o usuário editar o cadastro dos restaurantes e produtos registrados, mantendo atualizado os dados
-- `Listar`: Lista todos os restaurantes cadastrados, permitindo o usuário filtrar por nome e cidade ou listar um restaurante específico passando seu ID.
-- `Remover`: Exclui todos os dados de um restaurante específico;
+- `Editar`: Permite o usuário editar o cadastro dos restaurantes e pratos registrados, mantendo atualizado os dados
+- `Listar`: Lista todos os restaurantes e pratos cadastrados, permitindo o usuário filtrar por nome ou listar um restaurante ou prato específico passando seu ID.
+- `Remover`: Exclui todos os dados de um restaurante ou prato específico;
 
 ## :hammer: `Abrir e Rodar o Projeto`
 **Realizar a instalação**
