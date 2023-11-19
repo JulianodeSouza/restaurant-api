@@ -7,34 +7,16 @@ API Rest para ações de cadastro, edição e exclusão de restaurantes e seus p
 
 ## Restaurantes [/public/restaurant/]
 
-### Listar todos restaurantes [GET]
-
-+ Response 200 (application/json)
-
-        [
-            {
-            "id_restaurant": 1,
-            "url_image_restaurant": "",
-            "restaurant_name": "Nome restaurante",
-            "street": "Rua XYZ",
-            "neighborhood": "Centro",
-            "number": "1000",
-            "zipcode": "98787000",
-            "city": "Cidade"
-            },
-            {
-            "id_restaurant": 2,
-            "url_image_restaurant": "",
-            "restaurant_name": "Nome restaurante 2",
-            "street": "Rua XYZ",
-            "neighborhood": "Centro",
-            "number": "1000",
-            "zipcode": "98787000",
-            "city": "Cidade"
-            }
-        ]
-
 ### Cadastrar restaurante [POST]
+
++ Attributes
+    - url_image_restaurant (string) - Imagem do restaurante
+    - restaurant_name (string, required)- Nome do restaurante
+    - street (string, required) - Rua do restaurante
+    - neighborhood (string, required) - Bairro do restaurante
+    - city (string, required) - Cidade do restaurante
+    - number (string, required) - Número do endereço do restaurante
+    - zipcode (string, required) - CEP do restaurante
 
 + Request (application/json)
 
@@ -48,10 +30,99 @@ API Rest para ações de cadastro, edição e exclusão de restaurantes e seus p
             "zipcode": "Cep do endereço"
         }
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
     + Body
 
             {
                success: true
             }
+
+
++ Response 400 (application/json)
+   {
+        "message": "Não foi possível cadastrar o restaurante pois há erros no preenchimento dos campos",
+        "details": [
+            {
+                "field": "Campo com erro",
+                "message": "Motivo do erro"
+            }
+        ]
+    }
+
+
+
+### Listar todos restaurantes [GET]
+    Consulta de todos os restaurantes cadastrados
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id_restaurant": 1,
+                "url_image_restaurant": "",
+                "restaurant_name": "Nome restaurante",
+                "street": "Rua XYZ",
+                "neighborhood": "Centro",
+                "number": "1000",
+                "zipcode": "98787000",
+                "city": "Cidade"
+            },
+            {
+                "id_restaurant": 2,
+                "url_image_restaurant": "",
+                "restaurant_name": "Nome restaurante 2",
+                "street": "Rua XYZ",
+                "neighborhood": "Centro",
+                "number": "1000",
+                "zipcode": "98787000",
+                "city": "Cidade"
+            }
+        ]
++ Response 400 (application/json)
+        {
+        "error": "Motivo do erro"
+        }
+
+### Listar restaurante por ID [GET /public/restaurant/:id]
+    Consulte um restaurante específico passando o seu id
+    
++ Response 200 (application/json)
+
+    {
+        "id_restaurant": 1,
+        "url_image_restaurant": "",
+        "restaurant_name": "Nome restaurante",
+        "street": "Rua XYZ",
+        "neighborhood": "Centro",
+        "number": "1000",
+        "zipcode": "98787000",
+        "city": "Cidade"
+    },
+    
++ Response 400
+    {
+        "error": "Motivo do erro"
+    }
+    
+### Alterar dados do restaurante [PUT /public/restaurant/:id]
+
++ Request (application/json)
+
+        {
+            "url_image_restaurant": "imagem-do-restaurante.png"
+            "restaurant_name": "Nome do restaurante",
+            "street": "Rua XYZ",
+            "neighborhood": "Bairro",
+            "city": "Cidade",
+            "number": "Número do endereço",
+            "zipcode": "Cep do endereço"
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+        {
+           success: true
+        }
