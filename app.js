@@ -5,6 +5,7 @@ const multer = require("multer");
 const path = require("path");
 
 const Restaurant = require("./models/restaurant");
+const Products = require("./models/product");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -15,9 +16,9 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     let folder = "";
 
-    if (file.fieldname.url_image_restaurant) {
+    if (file.fieldname === "url_image_restaurant") {
       folder = "restaurants";
-    } else if (file.fieldname.url_image_product) {
+    } else if (file.fieldname === "url_image_product") {
       folder = "products";
     }
 
@@ -41,6 +42,7 @@ const upload = multer({
 app.use(upload.any());
 
 app.use("/public/restaurant", require("./views/restaurant"));
+app.use("/public/product", require("./views/product"));
 
 db.sync()
   .then(() => {
