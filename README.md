@@ -8,7 +8,7 @@ API REST para CRUD de restaurantes e seus produtos.
 </p>
 
 <hr />
-Link para a documentação da API -> https://backendchallange.docs.apiary.io/#reference
+Para acessar a documentação completa <a href="https://restaurantapi13.docs.apiary.io" target="_blank">clique aqui</a>
 <hr />
 
 ## :hammer: `Funcionalidades`
