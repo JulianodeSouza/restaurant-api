@@ -1,25 +1,33 @@
 const db = require("../../db/conn");
 const { QueryTypes } = require("sequelize");
 const RequestErrors = require("../errors/Request");
+const moment = require("moment/moment");
 
 class Product {
-  async listAllProducts(params) {
+  async listAllProducts(params, idRestaurant) {
     const sql = `select * from products p
-    where (p.product_name like :search or p.category like :search)`;
+    where p.id_restaurant = :id_restaurant and (p.product_name like :search or p.category like :search)`;
 
     const products = await db.query(sql, {
       replacements: {
+        id_restaurant: idRestaurant,
         search: "%" + params + "%",
       },
       type: QueryTypes.SELECT,
     });
 
-    return products;
+    let productsConverted = [];
+    for (const product of products) {
+      productsConverted.push(this.convertProduct(product));
+    }
+
+    return productsConverted;
   }
 
   async saveProduct(product) {
     const newProduct = {
       url_image_product: product.url_image_product || null,
+      id_restaurant: product.id_restaurant,
       product_name: product.product_name,
       description: product.description,
       category: product.category,
@@ -32,15 +40,16 @@ class Product {
     };
     await this.validateRegister(newProduct);
 
-    const sql = `insert into products 
-    (url_image_product, product_name, description, category, price, promotion,
+    const sql = `insert into products
+    (url_image_product, id_restaurant, product_name, description, category, price, promotion,
     start_promotion, end_promotion, price_promotion, description_promotion)
-    values (:url_image_product, :product_name, :description, :category, :price, 
+    values (:url_image_product, :id_restaurant, :product_name, :description, :category, :price,
     :promotion, :start_promotion, :end_promotion, :price_promotion, :description_promotion)`;
 
     await db.query(sql, {
       replacements: {
         url_image_product: newProduct.url_image_product,
+        id_restaurant: newProduct.id_restaurant,
         product_name: newProduct.product_name,
         description: newProduct.description,
         category: newProduct.category,
@@ -57,13 +66,14 @@ class Product {
     return { success: true };
   }
 
-  async removeProduct(id) {
+  async removeProduct(idProduct, idRestaurant) {
     const sqlSelect =
-      "select * from products p where p.id_product = :id_product";
+      "select * from products p where p.id_product = :id_product and p.id_restaurant = :id_restaurant";
 
     const product = await db.query(sqlSelect, {
       replacements: {
-        id_product: id,
+        id_restaurant: idRestaurant,
+        id_product: idProduct,
       },
       type: QueryTypes.SELECT,
     });
@@ -72,11 +82,13 @@ class Product {
       throw new Error("Produto não encontrado");
     }
 
-    const sql = "delete from products p where p.id_product = :id_product";
+    const sql =
+      "delete from products p where p.id_product = :id_product and p.id_restaurant = :id_restaurant";
 
     await db.query(sql, {
       replacements: {
-        id_product: id,
+        id_restaurant: idRestaurant,
+        id_product: idProduct,
       },
       type: QueryTypes.DELETE,
     });
@@ -137,7 +149,7 @@ class Product {
         });
       }
 
-      if (!price_promotion) {
+      if (!data.price_promotion) {
         errors.push({
           field: "price_promotion",
           message: "Valor da promoção é obrigatório",
@@ -151,6 +163,32 @@ class Product {
         errors
       );
     }
+  }
+
+  convertProduct(product) {
+    let productConverted = {};
+
+    productConverted.id_product = product.id_product;
+    productConverted.id_restaurant = product.id_restaurant;
+    productConverted.url_image_product = product.url_image_product;
+    productConverted.product_name = product.product_name;
+    productConverted.description = product.description;
+    productConverted.price = product.price;
+    productConverted.category = product.category;
+    productConverted.promotion = !!product.promotion;
+
+    if (product.promotion) {
+      productConverted.description_promotion = product.description_promotion;
+      productConverted.price_promotion = product.price_promotion;
+      productConverted.start_promotion = moment(product.start_promotion).format(
+        "DD/MM/YYYY"
+      );
+      productConverted.end_promotion = moment(product.end_promotion).format(
+        "DD/MM/YYYY"
+      );
+    }
+
+    return productConverted;
   }
 }
 

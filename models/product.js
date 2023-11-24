@@ -10,6 +10,10 @@ const Products = db.define(
       autoIncrement: true,
       allowNull: false,
     },
+    id_restaurant: {
+      type: DataTypes.INTEGER,
+      require: true,
+    },
     url_image_product: {
       type: DataTypes.STRING,
       defaultValue: null,
