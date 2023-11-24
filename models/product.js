@@ -35,6 +35,7 @@ const Products = db.define(
       defaultValue: null,
     },
     promotion: {
+      require: true,
       type: DataTypes.BOOLEAN,
       defaultValue: null,
     },
@@ -42,8 +43,12 @@ const Products = db.define(
       type: DataTypes.STRING,
       defaultValue: null,
     },
-    days_promotion: {
-      type: DataTypes.STRING,
+    start_promotion: {
+      type: DataTypes.DATE,
+      defaultValue: null,
+    },
+    end_promotion: {
+      type: DataTypes.DATE,
       defaultValue: null,
     },
     price_promotion: {

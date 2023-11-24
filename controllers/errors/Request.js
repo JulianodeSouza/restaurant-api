@@ -3,7 +3,7 @@ class RequestErrors extends Error {
 
   constructor(message, errors) {
     super(message);
-    this.requestErrors = errors;
+    this.requestErrors = errors || [];
   }
 }
 
