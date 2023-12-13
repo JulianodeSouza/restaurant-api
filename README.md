@@ -4,7 +4,7 @@
 API REST para CRUD de restaurantes e seus produtos.
 
 <p align="left">
-    <img src="https://img.shields.io/badge/Status-Em desenvolvimento-yellow?style=for-the-badge"/>   
+    <img alt="Static Badge" src="https://img.shields.io/badge/STATUS-CONCLUIDO-green">
 </p>
 
 <hr />
