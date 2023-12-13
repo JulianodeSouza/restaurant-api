@@ -40,15 +40,17 @@ API Rest para ações de cadastro, edição e exclusão de restaurantes e seus p
 
 
 + Response 400 (application/json)
-   {
-        "message": "Não foi possível cadastrar o restaurante pois há erros no preenchimento dos campos",
-        "details": [
-            {
-                "field": "Campo com erro",
-                "message": "Motivo do erro"
-            }
-        ]
-    }
+
+       {
+            "message": "Não foi possível cadastrar o restaurante pois há erros no preenchimento dos campos",
+            "details":
+                [
+                    {
+                        "field": "Campo com erro",
+                        "message": "Motivo do erro"
+                    }
+                ]
+        }
 
 ### Listar todos restaurantes [GET]
     Consulta de todos os restaurantes cadastrados
@@ -77,9 +79,11 @@ API Rest para ações de cadastro, edição e exclusão de restaurantes e seus p
                 "city": "Cidade"
             }
         ]
+        
 + Response 400 (application/json)
+
         {
-        "error": "Motivo do erro"
+             "error": "Motivo do erro"
         }
 
 ### Listar restaurante por ID [GET /public/restaurant/:id]
@@ -87,21 +91,22 @@ API Rest para ações de cadastro, edição e exclusão de restaurantes e seus p
     
 + Response 200 (application/json)
 
-    {
-        "id_restaurant": 1,
-        "url_image_restaurant": "",
-        "restaurant_name": "Nome restaurante",
-        "street": "Rua XYZ",
-        "neighborhood": "Centro",
-        "number": "1000",
-        "zipcode": "98787000",
-        "city": "Cidade"
-    },
+        {
+            "id_restaurant": 1,
+            "url_image_restaurant": "",
+            "restaurant_name": "Nome restaurante",
+            "street": "Rua XYZ",
+            "neighborhood": "Centro",
+            "number": "1000",
+            "zipcode": "98787000",
+            "city": "Cidade"
+        },
     
 + Response 400
-    {
-        "error": "Motivo do erro"
-    }
+
+        {
+            "error": "Motivo do erro"
+        }
     
 ### Alterar dados do restaurante [PUT /public/restaurant/{id}]
 
@@ -121,9 +126,9 @@ API Rest para ações de cadastro, edição e exclusão de restaurantes e seus p
 
     + Body
 
-        {
-           success: true
-        }
+            {
+               success: true
+            }
         
 ### Excluir restaurante [DELETE /public/restaurant/{id}]
 
@@ -131,9 +136,9 @@ API Rest para ações de cadastro, edição e exclusão de restaurantes e seus p
 
     + Body
 
-        {
-           success: true
-        }
+            {
+               success: true
+            }
         
 ## Pratos [/public/products/]
 
@@ -179,9 +184,11 @@ API Rest para ações de cadastro, edição e exclusão de restaurantes e seus p
 
 
 + Response 400 (application/json)
+
    {
-        "message": "Não foi possível cadastrar o restaurante pois há erros no preenchimento dos campos",
-        "details": [
+        "message": "Não foi possível cadastrar o produto pois há erros no preenchimento dos campos",
+        "details":
+        [
             {
                 "field": "Campo com erro",
                 "message": "Motivo do erro"
@@ -221,17 +228,48 @@ API Rest para ações de cadastro, edição e exclusão de restaurantes e seus p
                 }
         ]
 + Response 400 (application/json)
+
         {
         "error": "Motivo do erro"
         }
         
-        
-### Excluir prato [DELETE /public/restaurant/{idproduct}/restaurant/{idRestaurant}]
+### Alterar dados de um prato [PUT /public/restaurant/{idproduct}]
+
++ Parameters
+
+    + idproduct - ID do produto
 
 + Response 200 (application/json)
 
     + Body
 
+            {
+               success: true
+            }
+            
++ Response 400 (application/json)
+
         {
-           success: true
+            "error": "Motivo do erro"
+        }
+        
+### Excluir prato [DELETE /public/restaurant/{idproduct}/restaurant/{idRestaurant}]
+
++ Parameters
+
+    + idproduct - ID do produto
+    + idRestaurant - ID do restaurante em que o prato está cadastrado
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               success: true
+            }
+            
++ Response 400 (application/json)
+
+        {
+            "error": "Motivo do erro"
         }
