@@ -93,7 +93,7 @@ class Product {
       type: QueryTypes.DELETE,
     });
 
-    return { sucess: true };
+    return { success: true };
   }
 
   async validateRegister(data) {
